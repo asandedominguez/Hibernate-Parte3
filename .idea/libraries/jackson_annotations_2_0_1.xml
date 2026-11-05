@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="jackson-annotations-2.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Documentos/ProxectoCocheHibernate-monodireccion(2)/ProxectoCocheHibernate-monodireccion/jackson-annotations-2.0.1.jar" />
+      <root url="file://$USER_HOME$/Documentos/ProxectoCocheHibernate-monodireccion(2)/ProxectoCocheHibernate-monodireccion/hibernateLibs" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$USER_HOME$/Documentos/ProxectoCocheHibernate-monodireccion(2)/ProxectoCocheHibernate-monodireccion/hibernateLibs" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Documentos/ProxectoCocheHibernate-monodireccion(2)/ProxectoCocheHibernate-monodireccion/jackson-annotations-2.0.1.jar" recursive="false" />
+  </library>
+</component>
