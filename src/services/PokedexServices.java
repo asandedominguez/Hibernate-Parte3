@@ -89,4 +89,59 @@ public class PokedexServices {
             System.out.println(e.getMessage());
         }
     }
+    public void crearPokemonQuery(String nome, BigDecimal peso, String misc) {
+        String sql = "INSERT INTO pokedex (nome, peso, misc) VALUES (:nome, :peso, :misc)";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery(sql)
+                    .setParameter("nome", nome)
+                    .setParameter("peso", peso)
+                    .setParameter("misc", misc)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Pokedex lerPokemonPorIdQuery(Long id) {
+        String hql = "FROM Pokedex WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Pokedex.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void actualizarPokemonQuery(Pokedex pokemon) {
+        String hql = "UPDATE Pokedex SET nome = :nome, peso = :peso, misc = :misc WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("nome", pokemon.getNome())
+                    .setParameter("peso", pokemon.getPeso())
+                    .setParameter("misc", pokemon.getMisc())
+                    .setParameter("id", pokemon.getId())
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void eliminarPokemonQuery(Pokedex pokemon) {
+        String hql = "DELETE FROM Pokedex WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("id", pokemon.getId())
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

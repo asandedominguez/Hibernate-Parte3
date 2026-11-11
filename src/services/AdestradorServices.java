@@ -87,4 +87,60 @@ public class AdestradorServices {
             System.out.println(e.getMessage());
         }
     }
+
+    public void crearAdestradorQuery(String nome, Date nacemento) {
+        String sql = "INSERT INTO adestrador (nome, nacemento) VALUES (:nome, :nacemento)";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery(sql)
+                    .setParameter("nome", nome)
+                    .setParameter("nacemento", nacemento)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Adestrador lerAdestradorPorIdQuery(Long id) {
+        String hql = "FROM Adestrador WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Adestrador.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void actualizarAdestradorQuery(Adestrador adestrador) {
+        String hql = "UPDATE Adestrador SET nome = :nome, nacemento = :nacemento WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("nome", adestrador.getNome())
+                    .setParameter("nacemento", adestrador.getNacemento())
+                    .setParameter("id", adestrador.getId())
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void eliminarAdestradorQuery(Adestrador adestrador) {
+        String hql = "DELETE FROM Adestrador WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("id", adestrador.getId())
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 }

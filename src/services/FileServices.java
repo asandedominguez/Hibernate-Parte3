@@ -14,9 +14,8 @@ public class FileServices {
         try (FileOutputStream fos = new FileOutputStream(rutaArquivo);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
-            for (Pokedex p : listaPokedex) {
-                oos.writeObject(p);
-            }
+            oos.writeObject(listaPokedex);
+            
             System.out.println("Entradas de Pokedex serializadas en: " + rutaArquivo);
 
         } catch (Exception e) {

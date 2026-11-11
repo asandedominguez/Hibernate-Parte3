@@ -77,4 +77,62 @@ public class PokemonServices {
             return null;
         }
     }
+
+    public void InsertarPokemonQuery(String nome, Date nacemento, Pokedex pokedex, Adestrador adestrador) {
+        String sql = "INSERT INTO Pokemon (nome, nacemento, PokedexEntry, Adestrador) VALUES (:nome, :nacemento, :pokedex, :adestrador)";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery(sql)
+                    .setParameter("nome", nome)
+                    .setParameter("nacemento", nacemento)
+                    .setParameter("pokedex", pokedex.getId())
+                    .setParameter("adestrador", adestrador.getId())
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Pokemon lerPokemonQuery(Long id) {
+        String hql = "FROM Pokemon WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Pokemon.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void actualizarPokemonQuery(Long id, String nome, Date nacemento, Pokedex pokedex, Adestrador adestrador) {
+        String hql = "UPDATE Pokemon SET nome = :nome, nacemento = :nacemento, pokedex = :pokedex, adestrador = :adestrador WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("nome", nome)
+                    .setParameter("nacemento", nacemento)
+                    .setParameter("pokedex", pokedex)
+                    .setParameter("adestrador", adestrador)
+                    .setParameter("id", id)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void eliminarPokemonQuery(Long id) {
+        String hql = "DELETE FROM Pokemon WHERE id = :id";
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery(hql)
+                    .setParameter("id", id)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
