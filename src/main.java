@@ -22,6 +22,7 @@ public class main {
 
         System.out.println("Secuencia executada con obxectos e métodos hibernate:");
 
+        System.out.println("Creando entradas na pokedex:");
         pokedexServices.crearPokemon("Bulbasaur", new BigDecimal("6.9"), "Planta/Veneno");
         pokedexServices.crearPokemon("Charmander", new BigDecimal("8.5"), "Fogo");
         pokedexServices.crearPokemon("Squirtle", new BigDecimal("9.0"), "Aga");
@@ -33,12 +34,15 @@ public class main {
         pokedexServices.crearPokemon("Gengar", new BigDecimal("40.5"), "Pantasma/Veneno");
         pokedexServices.crearPokemon("Mewtwo", new BigDecimal("122.0"), "Psíquico");
 
+        System.out.println("Creando adestradores:");
         adestradorServices.crearAdestrador("Ash Ketchum", new Date());
         adestradorServices.crearAdestrador("Misty", new Date());
 
+        System.out.println("Lendo adestradores por nome:");
         Adestrador ash = adestradorServices.lerAdestradorPorNome("Ash Ketchum");
         Adestrador misty = adestradorServices.lerAdestradorPorNome("Misty");
 
+        System.out.println("Lendo entradas da pokedex por nome:");
         Pokedex p1 = pokedexServices.lerPokemonPorNome("Bulbasaur");
         Pokedex p2 = pokedexServices.lerPokemonPorNome("Charmander");
         Pokedex p3 = pokedexServices.lerPokemonPorNome("Squirtle");
@@ -50,6 +54,7 @@ public class main {
         Pokedex p9 = pokedexServices.lerPokemonPorNome("Gengar");
         Pokedex p10 = pokedexServices.lerPokemonPorNome("Mewtwo");
 
+        System.out.println("Insertando pokemons:");
         pokemonServices.InsertarPokemon("Pikachu de Ash", dataNacemento, p4, ash);
         pokemonServices.InsertarPokemon("Charizard", dataNacemento, p2, ash);
         pokemonServices.InsertarPokemon("Bulbasaur", dataNacemento, p1, ash);
@@ -64,31 +69,34 @@ public class main {
         pokemonServices.InsertarPokemon("Pikachu II", dataNacemento, p4, misty);
         pokemonServices.InsertarPokemon("Squirtle II", dataNacemento, p3, misty);
 
-        System.out.println("Listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("Listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println(a.toString());
         }
 
-        System.out.println("Listado Pokemon");
+        System.out.println("Listado Pokemon:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Nacemento: " + pk.getNacemento() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Serializando entradas da pokedex:");
         List<Pokedex> pokedexSerializar = new ArrayList<>();
         pokedexSerializar.add(p1);
         pokedexSerializar.add(p2);
         fileServices.serializarPokedex(pokedexSerializar, "pokedex");
 
+        System.out.println("Exportando adestradores a XML:");
         List<Adestrador> adestradoresExportar = new ArrayList<>();
         adestradoresExportar.add(ash);
         adestradoresExportar.add(misty);
         fileServices.exportarAdestradores(adestradoresExportar, "adestradores.xml");
 
+        System.out.println("Actualizando entradas da pokedex:");
         p1.setNome("Bulbasaur Editado");
         p1.setPeso(new BigDecimal("7.5"));
         pokedexServices.actualizarPokemon(p1);
@@ -97,12 +105,14 @@ public class main {
         p2.setPeso(new BigDecimal("9.2"));
         pokedexServices.actualizarPokemon(p2);
 
+        System.out.println("Actualizando adestradores:");
         ash.setNome("Ash Ketchum (Campión)");
         adestradorServices.actualizarAdestrador(ash);
 
         misty.setNome("Misty (Líder de Ximnasio)");
         adestradorServices.actualizarAdestrador(misty);
 
+        System.out.println("Actualizando pokemons:");
         List<Pokemon> listaPokemons = pokemonServices.listarPokemon();
         Pokemon pk1 = listaPokemons.get(0);
         Pokemon pk2 = listaPokemons.get(1);
@@ -114,23 +124,24 @@ public class main {
         pokemonServices.actualizarPokemon(pk3.getId(), "Bulbasaur Mega", pk3.getNacemento(), pk3.getPokedex(), pk3.getAdestrador());
         pokemonServices.actualizarPokemon(pk4.getId(), "Squirtle Alola", pk4.getNacemento(), pk4.getPokedex(), pk4.getAdestrador());
 
-        System.out.println("Listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("Listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println("ID: " + a.getId() + " | Nome: " + a.getNome() + " | Nacemento: " + a.getNacemento());
         }
 
-        System.out.println("Listado Pokemons");
+        System.out.println("Listado Pokemons:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Deserializando e restaurando entradas da pokedex:");
         List<Pokedex> pokemonsDeserializados = fileServices.deserializar("pokedex");
-        System.out.println("Entradas deserializadas");
+        System.out.println("Entradas deserializadas:");
         for (Pokedex pDeserializado : pokemonsDeserializados) {
             Pokedex pEnBD = pokedexServices.lerPokemonPorId(pDeserializado.getId());
             if (pEnBD != null) {
@@ -142,21 +153,22 @@ public class main {
             }
         }
 
-        System.out.println("listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println("ID: " + a.getId() + " | Nome: " + a.getNome() + " | Nacemento: " + a.getNacemento());
         }
 
-        System.out.println("listado Pokemons");
+        System.out.println("Listado Pokemons:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Eliminando todos os rexistros das táboas:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             pokemonServices.eliminarPokemon(pk.getId());
         }
@@ -170,6 +182,7 @@ public class main {
 
         System.out.println("Secuencia executada coas queries especificadas:");
 
+        System.out.println("Creando entradas na pokedex con query:");
         pokedexServices.crearPokemonQuery("Bulbasaur", new BigDecimal("6.9"), "Planta/Veneno");
         pokedexServices.crearPokemonQuery("Charmander", new BigDecimal("8.5"), "Fogo");
         pokedexServices.crearPokemonQuery("Squirtle", new BigDecimal("9.0"), "Aga");
@@ -181,12 +194,15 @@ public class main {
         pokedexServices.crearPokemonQuery("Gengar", new BigDecimal("40.5"), "Pantasma/Veneno");
         pokedexServices.crearPokemonQuery("Mewtwo", new BigDecimal("122.0"), "Psíquico");
 
+        System.out.println("Creando adestradores con query:");
         adestradorServices.crearAdestradorQuery("Ash Ketchum", new Date());
         adestradorServices.crearAdestradorQuery("Misty", new Date());
 
+        System.out.println("Lendo adestradores por nome:");
         Adestrador ashQ = adestradorServices.lerAdestradorPorNome("Ash Ketchum");
         Adestrador mistyQ = adestradorServices.lerAdestradorPorNome("Misty");
 
+        System.out.println("Lendo entradas da pokedex por nome:");
         Pokedex p1Q = pokedexServices.lerPokemonPorNome("Bulbasaur");
         Pokedex p2Q = pokedexServices.lerPokemonPorNome("Charmander");
         Pokedex p3Q = pokedexServices.lerPokemonPorNome("Squirtle");
@@ -198,6 +214,7 @@ public class main {
         Pokedex p9Q = pokedexServices.lerPokemonPorNome("Gengar");
         Pokedex p10Q = pokedexServices.lerPokemonPorNome("Mewtwo");
 
+        System.out.println("Insertando pokemons con query:");
         pokemonServices.InsertarPokemonQuery("Pikachu de Ash", dataNacemento, p4Q, ashQ);
         pokemonServices.InsertarPokemonQuery("Charizard", dataNacemento, p2Q, ashQ);
         pokemonServices.InsertarPokemonQuery("Bulbasaur", dataNacemento, p1Q, ashQ);
@@ -212,31 +229,34 @@ public class main {
         pokemonServices.InsertarPokemonQuery("Pikachu II", dataNacemento, p4Q, mistyQ);
         pokemonServices.InsertarPokemonQuery("Squirtle II", dataNacemento, p3Q, mistyQ);
 
-        System.out.println("Listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("Listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println(a.toString());
         }
 
-        System.out.println("Listado Pokemon");
+        System.out.println("Listado Pokemon:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Nacemento: " + pk.getNacemento() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Serializando entradas da pokedex:");
         List<Pokedex> pokedexSerializarQ = new ArrayList<>();
         pokedexSerializarQ.add(p1Q);
         pokedexSerializarQ.add(p2Q);
         fileServices.serializarPokedex(pokedexSerializarQ, "pokedex");
 
+        System.out.println("Exportando adestradores a XML:");
         List<Adestrador> adestradoresExportarQ = new ArrayList<>();
         adestradoresExportarQ.add(ashQ);
         adestradoresExportarQ.add(mistyQ);
         fileServices.exportarAdestradores(adestradoresExportarQ, "adestradores.xml");
 
+        System.out.println("Actualizando entradas da pokedex con query:");
         p1Q.setNome("Bulbasaur Editado Query");
         p1Q.setPeso(new BigDecimal("7.5"));
         pokedexServices.actualizarPokemonQuery(p1Q);
@@ -245,12 +265,14 @@ public class main {
         p2Q.setPeso(new BigDecimal("9.2"));
         pokedexServices.actualizarPokemonQuery(p2Q);
 
+        System.out.println("Actualizando adestradores con query:");
         ashQ.setNome("Ash Ketchum (Campión Query)");
         adestradorServices.actualizarAdestradorQuery(ashQ);
 
         mistyQ.setNome("Misty (Líder Query)");
         adestradorServices.actualizarAdestradorQuery(mistyQ);
 
+        System.out.println("Actualizando pokemons con query:");
         List<Pokemon> listaPokemonsQ = pokemonServices.listarPokemon();
         Pokemon pk1Q = listaPokemonsQ.get(0);
         Pokemon pk2Q = listaPokemonsQ.get(1);
@@ -262,23 +284,24 @@ public class main {
         pokemonServices.actualizarPokemonQuery(pk3Q.getId(), "Bulbasaur Mega", pk3Q.getNacemento(), pk3Q.getPokedex(), pk3Q.getAdestrador());
         pokemonServices.actualizarPokemonQuery(pk4Q.getId(), "Squirtle Alola", pk4Q.getNacemento(), pk4Q.getPokedex(), pk4Q.getAdestrador());
 
-        System.out.println("Listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("Listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println("ID: " + a.getId() + " | Nome: " + a.getNome() + " | Nacemento: " + a.getNacemento());
         }
 
-        System.out.println("Listado Pokemons");
+        System.out.println("Listado Pokemons:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Deserializando e restaurando entradas da pokedex con query:");
         List<Pokedex> pokemonsDeserializadosQ = fileServices.deserializar("pokedex");
-        System.out.println("Entradas deserializadas");
+        System.out.println("Entradas deserializadas:");
         for (Pokedex pDeserializado : pokemonsDeserializadosQ) {
             Pokedex pEnBD = pokedexServices.lerPokemonPorIdQuery(pDeserializado.getId());
             if (pEnBD != null) {
@@ -290,21 +313,22 @@ public class main {
             }
         }
 
-        System.out.println("listado pokedex");
+        System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
         }
 
-        System.out.println("listado adestradores");
+        System.out.println("Listado adestradores:");
         for (Adestrador a : adestradorServices.listarAdestradores()) {
             System.out.println("ID: " + a.getId() + " | Nome: " + a.getNome() + " | Nacemento: " + a.getNacemento());
         }
 
-        System.out.println("listado Pokemons");
+        System.out.println("Listado Pokemons:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             System.out.println("id: " + pk.getId() + " Nome: " + pk.getNome() + " Tipo: " + pk.getPokedex().getNome() + " Adestrador: " + pk.getAdestrador().getNome());
         }
 
+        System.out.println("Eliminando todos os rexistros das táboas con query:");
         for (Pokemon pk : pokemonServices.listarPokemon()) {
             pokemonServices.eliminarPokemonQuery(pk.getId());
         }
