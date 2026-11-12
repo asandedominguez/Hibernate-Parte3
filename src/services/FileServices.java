@@ -3,11 +3,13 @@ package services;
 import model.Adestrador;
 import model.Pokedex;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FileServices {
     public void serializarPokedex(List<Pokedex> listaPokedex, String rutaArquivo) {
@@ -67,6 +69,73 @@ public class FileServices {
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    public List<Adestrador> importarAdestrador(String ruta) {
+        List<Adestrador> lista = new ArrayList<>();
+        XMLInputFactory xif = XMLInputFactory.newInstance();
+
+        try (FileReader fr = new FileReader(ruta)) {
+            XMLStreamReader xsr = xif.createXMLStreamReader(fr);
+            Adestrador actual = null;
+            StringBuilder texto = new StringBuilder();
+
+            while (xsr.hasNext()) {
+                int evento = xsr.next();
+
+                switch (evento) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        texto.setLength(0);
+                        if ("Adestrador".equals(xsr.getLocalName())) {
+                            String idAttr = xsr.getAttributeValue(null, "id");
+                            if (idAttr != null) {
+                                actual = new Adestrador();
+                                actual.setId(Long.parseLong(idAttr));
+                            }
+                        }
+                        break;
+
+                    case XMLStreamConstants.CHARACTERS:
+                        texto.append(xsr.getText());
+                        break;
+
+                    case XMLStreamConstants.END_ELEMENT:
+                        String etiqueta = xsr.getLocalName();
+
+                        if (actual != null) {
+                            if ("Nome".equals(etiqueta)) {
+                                actual.setNome(texto.toString().trim());
+                            } else if ("Data".equals(etiqueta)) {
+                                String fechaStr = texto.toString().trim();
+                                if (!fechaStr.isEmpty() && !"null".equals(fechaStr)) {
+                                    actual.setNacemento(parsearFecha(fechaStr));
+                                }
+                            } else if ("Adestrador".equals(etiqueta)) {
+                                lista.add(actual);
+                                actual = null;
+                            }
+                        }
+                        break;
+                }
+            }
+            xsr.close();
+        } catch (Exception e) {
+            System.err.println("Erro ao importar XML: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    public Date parsearFecha(String fechaStr) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd").parse(fechaStr);
+        } catch (Exception e) {
+            try {
+                return new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(fechaStr);
+            } catch (Exception ex) {
+                return new Date();
+            }
         }
     }
 

@@ -153,6 +153,18 @@ public class main {
             }
         }
 
+        System.out.println("Importando e restaurando adestradores desde XML:");
+        List<Adestrador> adestradoresImportados = fileServices.importarAdestrador("adestradores.xml");
+        for (Adestrador aImportado : adestradoresImportados) {
+            Adestrador aEnBD = adestradorServices.lerAdestradorPorId(aImportado.getId());
+            if (aEnBD != null) {
+                aEnBD.setNome(aImportado.getNome());
+                aEnBD.setNacemento(aImportado.getNacemento());
+                adestradorServices.actualizarAdestrador(aEnBD);
+                System.out.println(aEnBD.getId() + " - " + aEnBD.getNome());
+            }
+        }
+
         System.out.println("Listado pokedex:");
         for (Pokedex p : pokedexServices.listarPokemons()) {
             System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Peso: " + p.getPeso() + "kg | Misc: " + p.getMisc());
@@ -310,6 +322,18 @@ public class main {
                 pEnBD.setMisc(pDeserializado.getMisc());
                 pokedexServices.actualizarPokemonQuery(pEnBD);
                 System.out.println(pEnBD.getId() + " - " + pEnBD.getNome());
+            }
+        }
+
+        System.out.println("Importando e restaurando adestradores desde XML con query:");
+        List<Adestrador> adestradoresImportadosQ = fileServices.importarAdestrador("adestradores.xml");
+        for (Adestrador aImportado : adestradoresImportadosQ) {
+            Adestrador aEnBD = adestradorServices.lerAdestradorPorIdQuery(aImportado.getId());
+            if (aEnBD != null) {
+                aEnBD.setNome(aImportado.getNome());
+                aEnBD.setNacemento(aImportado.getNacemento());
+                adestradorServices.actualizarAdestradorQuery(aEnBD);
+                System.out.println(aEnBD.getId() + " - " + aEnBD.getNome());
             }
         }
 
